@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { fetchAuth } from "utils/fetchAuth";
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,9 +17,26 @@ function Auth() {
   const onChangePasswordHandler = ({ target: { value } }) => setPassword(value);
   const onClickLoginHandler = async (e) => {
     e.preventDefault();
+    const {
+      status,
+      data: { message, token },
+    } = await fetchAuth("/users/login", email, password);
+    alert(message);
+    setLocalStorage("token", token);
+    if (status === 200) {
+      return navigate("/");
+    }
   };
   const onClickSignInHandler = async (e) => {
     e.preventDefault();
+    const {
+      status,
+      data: { message },
+    } = await fetchAuth("/users/create", email, password);
+    alert(message);
+    if (status === 200) {
+      <Navigate to="/" />;
+    }
   };
   return (
     <div>
