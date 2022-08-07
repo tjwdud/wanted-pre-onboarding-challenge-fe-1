@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { fetchAuth } from "utils/fetchAuth";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { setLocalStorage, getLocalStorage } from "utils/storage";
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (getLocalStorage("token")) return navigate("/");
+  }, []);
   useEffect(() => {
     setSubmitDisabled(validation(email, password));
   }, [email, password]);
