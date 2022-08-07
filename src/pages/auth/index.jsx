@@ -1,10 +1,17 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  useEffect(() => {
+    setSubmitDisabled(validation(email, password));
+  }, [email, password]);
 
+  const validation = (email, password) => {
+    if (email.includes("@") && email.includes(".") && password.length >= 8)
+      return false;
+    return true;
+  };
   const onChangeEmailHandler = ({ target: { value } }) => setEmail(value);
   const onChangePasswordHandler = ({ target: { value } }) => setPassword(value);
   const onClickLoginHandler = async (e) => {
